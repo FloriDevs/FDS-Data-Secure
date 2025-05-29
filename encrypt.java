@@ -12,7 +12,7 @@ public class App extends JFrame {
 
     public App() {
         // Setzt den Titel des Fensters
-        setTitle("FDSecure - Datei-Verschlüsselung");
+        setTitle("FDSecure - Data-Encrypt");
         // Legt die Standardoperation beim Schließen des Fensters fest
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Setzt die Größe des Fensters
@@ -27,7 +27,7 @@ public class App extends JFrame {
         inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20)); // Polsterung
 
         // Erstellt eine Beschriftung für das Passwortfeld
-        JLabel passwordLabel = new JLabel("Passwort:");
+        JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Inter", Font.PLAIN, 16)); // Schriftart anpassen
         inputPanel.add(passwordLabel);
 
@@ -42,7 +42,7 @@ public class App extends JFrame {
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 50, 20, 50)); // Polsterung
 
         // Erstellt die Schaltfläche zum Verschlüsseln
-        JButton encryptButton = new JButton("Datei verschlüsseln");
+        JButton encryptButton = new JButton("encrypt");
         encryptButton.setFont(new Font("Inter", Font.BOLD, 16));
         encryptButton.setBackground(new Color(60, 179, 113)); // Mittelmeergrün
         encryptButton.setForeground(Color.WHITE);
@@ -56,7 +56,7 @@ public class App extends JFrame {
         buttonPanel.add(encryptButton);
 
         // Erstellt die Schaltfläche zum Entschlüsseln
-        JButton decryptButton = new JButton("Datei entschlüsseln");
+        JButton decryptButton = new JButton("decrypt");
         decryptButton.setFont(new Font("Inter", Font.BOLD, 16));
         decryptButton.setBackground(new Color(70, 130, 180)); // Stahlblau
         decryptButton.setForeground(Color.WHITE);
@@ -86,13 +86,13 @@ public class App extends JFrame {
         String password = new String(passwordField.getText());
         if (password.isEmpty()) {
             // Zeigt eine Fehlermeldung an, wenn kein Passwort eingegeben wurde
-            showMessage("Fehler", "Bitte geben Sie ein Passwort ein.", JOptionPane.WARNING_MESSAGE);
+            showMessage("Error please enter a Password", ".", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         // Erstellt einen Dateiauswahldialog
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Datei zum Verschlüsseln auswählen");
+        fileChooser.setDialogTitle("Choose file");
         // Zeigt den Öffnen-Dialog an
         int userSelection = fileChooser.showOpenDialog(this);
 
@@ -117,14 +117,14 @@ public class App extends JFrame {
                 // Schreibt die verschlüsselten Bytes in die Ausgabedatei
                 writeAllBytes(outputFile, encryptedBytes);
                 // Aktualisiert die Statusleiste
-                statusLabel.setText("Datei erfolgreich verschlüsselt: " + outputFile.getName());
+                statusLabel.setText("File successfully encrypted: " + outputFile.getName());
                 // Zeigt eine Erfolgsmeldung an
-                showMessage("Erfolg", "Datei erfolgreich verschlüsselt!", JOptionPane.INFORMATION_MESSAGE);
+                showMessage("success", "File successfully encrypted!", JOptionPane.INFORMATION_MESSAGE);
 
             } catch (IOException | NoSuchAlgorithmException ex) {
                 // Behandelt Fehler beim Lesen, Schreiben oder bei der Schlüsselgenerierung
-                statusLabel.setText("Fehler beim Verschlüsseln: " + ex.getMessage());
-                showMessage("Fehler", "Fehler beim Verschlüsseln der Datei: " + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+                statusLabel.setText("Error: " + ex.getMessage());
+                showMessage("Error", "Error:" + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         }
@@ -136,13 +136,13 @@ public class App extends JFrame {
         String password = new String(passwordField.getText());
         if (password.isEmpty()) {
             // Zeigt eine Fehlermeldung an, wenn kein Passwort eingegeben wurde
-            showMessage("Fehler", "Bitte geben Sie ein Passwort ein.", JOptionPane.WARNING_MESSAGE);
+            showMessage("Error", "No/wrong password entered.", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         // Erstellt einen Dateiauswahldialog
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("FDSecure-Datei zum Entschlüsseln auswählen");
+        fileChooser.setDialogTitle("Choose file to decrypt");
         // Setzt einen Dateifilter, um nur .fdsecure-Dateien anzuzeigen
         fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
             @Override
@@ -152,7 +152,7 @@ public class App extends JFrame {
 
             @Override
             public String getDescription() {
-                return "FDSecure-Dateien (*.fdsecure)";
+                return "FDSecure-files (*.fdsecure)";
             }
         });
         // Zeigt den Öffnen-Dialog an
@@ -163,7 +163,7 @@ public class App extends JFrame {
             File inputFile = fileChooser.getSelectedFile();
             // Überprüft, ob die ausgewählte Datei die .fdsecure-Endung hat
             if (!inputFile.getName().toLowerCase().endsWith(".fdsecure")) {
-                showMessage("Fehler", "Bitte wählen Sie eine .fdsecure-Datei zum Entschlüsseln aus.", JOptionPane.WARNING_MESSAGE);
+                showMessage("Error", "No/unsupported file/ file type.", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -186,14 +186,14 @@ public class App extends JFrame {
                 // Schreibt die entschlüsselten Bytes in die Ausgabedatei
                 writeAllBytes(outputFile, decryptedBytes);
                 // Aktualisiert die Statusleiste
-                statusLabel.setText("Datei erfolgreich entschlüsselt und exportiert: " + outputFile.getName());
+                statusLabel.setText(": " + outputFile.getName());
                 // Zeigt eine Erfolgsmeldung an
-                showMessage("Erfolg", "Datei erfolgreich entschlüsselt und exportiert!", JOptionPane.INFORMATION_MESSAGE);
+                showMessage("Succsess", "File successfully decrypted and exported!", JOptionPane.INFORMATION_MESSAGE);
 
             } catch (IOException | NoSuchAlgorithmException ex) {
                 // Behandelt Fehler beim Lesen, Schreiben oder bei der Schlüsselgenerierung
-                statusLabel.setText("Fehler beim Entschlüsseln: " + ex.getMessage());
-                showMessage("Fehler", "Fehler beim Entschlüsseln der Datei: " + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+                statusLabel.setText("Error: " + ex.getMessage());
+                showMessage("Error", "Error: " + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         }
